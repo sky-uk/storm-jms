@@ -68,6 +68,7 @@ public class JmsSpout extends BaseRichSpout implements MessageListener, Exceptio
     private Timer recoveryTimer = null;
     private long recoveryPeriod = -1; //default to disabled
     private long retryPeriod = 30000;
+    private String messageSelector;
 
     /**
      * Sets the JMS Session acknowledgement mode for the JMS seesion associated with this spout.
@@ -313,7 +314,7 @@ public class JmsSpout extends BaseRichSpout implements MessageListener, Exceptio
         this.connection = cf.createConnection();
         this.session = connection.createSession(false,
                 this.jmsAcknowledgeMode);
-        MessageConsumer consumer = session.createConsumer(dest);
+        MessageConsumer consumer = session.createConsumer(dest, messageSelector);
         consumer.setMessageListener(this);
         this.connection.setExceptionListener(this);
         this.connection.start();
@@ -407,5 +408,9 @@ public class JmsSpout extends BaseRichSpout implements MessageListener, Exceptio
                 }
             }
         }
+    }
+
+    public void setMessageSelector(String messageSelector) {
+        this.messageSelector = messageSelector;
     }
 }
