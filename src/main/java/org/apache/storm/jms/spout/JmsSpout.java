@@ -294,6 +294,7 @@ public class JmsSpout extends BaseRichSpout implements MessageListener, Exceptio
                 Utils.sleep(retryPeriod);
                 createJMSConnection();
                 LOG.info("Successfully restarted JMS connection.");
+                count("JMSReconnectionSuccess");
                 restarted = true;
             } catch (Exception e) {
                 count(e);
