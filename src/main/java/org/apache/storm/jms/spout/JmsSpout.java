@@ -62,7 +62,6 @@ public class JmsSpout extends BaseRichSpout implements MessageListener, Exceptio
     private MultiCountMetric counter;
     private transient Connection connection;
     private transient Session session;
-    private final static int NUM_RETRIES = 20;
     private boolean hasFailures = false;
     public final Serializable recoveryMutex = "RECOVERY_MUTEX";
     private Timer recoveryTimer = null;
@@ -288,7 +287,7 @@ public class JmsSpout extends BaseRichSpout implements MessageListener, Exceptio
         count(exception);
         LOG.error("Exception from JMS connection. Will attempt to restart.", exception);
         close();
-        while(!restarted && tries < NUM_RETRIES) {
+        while(!restarted) {
             tries++;
             try {
                 count("JMSReconnectionAttempt");
@@ -300,11 +299,6 @@ public class JmsSpout extends BaseRichSpout implements MessageListener, Exceptio
                 count(e);
                 LOG.error("Error restarting JMS Connection. Attempt " + tries, e);
             }
-        }
-        if(!restarted) {
-            count("JMSSpoutDeath");
-            LOG.error("Unable to reconnect to JMS broker. Topology must be restarted.");
-            throw new RuntimeException("Killing JMS Spout as cannot connect to broker.");
         }
     }
 
