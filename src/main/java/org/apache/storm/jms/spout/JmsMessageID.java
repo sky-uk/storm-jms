@@ -11,20 +11,10 @@ public class JmsMessageID implements Comparable<JmsMessageID>, Serializable {
 
     private Long sequence;
 
-//    private Message message;
-
     public JmsMessageID(long sequence, String jmsID){
         this.jmsID = jmsID;
         this.sequence = sequence;
     }
-
-//    public void setMessage(Message message){
-//        this.message = message;
-//    }
-//
-//    public Message getMessage(){
-//        return this.message;
-//    }
 
     public String getJmsID(){
         return this.jmsID;
@@ -38,6 +28,11 @@ public class JmsMessageID implements Comparable<JmsMessageID>, Serializable {
     @Override
     public int hashCode() {
         return this.sequence.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return this.jmsID;
     }
 
     @Override
