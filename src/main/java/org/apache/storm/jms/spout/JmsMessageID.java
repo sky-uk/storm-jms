@@ -16,6 +16,10 @@ public class JmsMessageID implements Comparable<JmsMessageID>, Serializable {
         this.sequence = sequence;
     }
 
+    public String getJmsID(){
+        return this.jmsID;
+    }
+
     @Override
     public int compareTo(JmsMessageID jmsMessageID) {
         return (int)(this.sequence - jmsMessageID.sequence);
